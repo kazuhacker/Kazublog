@@ -273,6 +273,153 @@
             margin-bottom: 25px;
         }
         
+        /* Developer Card Section - 16:9 Aspect Ratio */
+        .developer-section {
+            width: 100%;
+            max-width: 800px;
+            margin: 30px auto 0;
+        }
+        
+        .developer-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            aspect-ratio: 16/9;
+            display: flex;
+            position: relative;
+        }
+        
+        .developer-photo-section {
+            flex: 0 0 40%;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #ff8a00 0%, #e52e71 100%);
+        }
+        
+        .developer-photo-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://i.supaimg.com/13159da3-6a6a-40c9-9d5d-dd2a3ca0910f.jpg');
+            background-size: cover;
+            opacity: 0.1;
+        }
+        
+        .developer-photo {
+            width: 160px;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 6px solid white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            animation: float 5s ease-in-out infinite;
+        }
+        
+        .developer-info {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: white;
+            position: relative;
+        }
+        
+        .developer-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://i.supaimg.com/13159da3-6a6a-40c9-9d5d-dd2a3ca0910f.jpg');
+            background-size: cover;
+            opacity: 0.03;
+        }
+        
+        .developer-name {
+            color: #e52e71;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .developer-details {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            padding: 8px 15px;
+            border-radius: 50px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .social-link.facebook {
+            background: linear-gradient(135deg, #3b5998 0%, #2d4373 100%);
+        }
+        
+        .social-link.tiktok {
+            background: linear-gradient(135deg, #000000 0%, #333333 100%);
+        }
+        
+        .social-link.whatsapp {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+        }
+        
+        .social-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .toggle-details {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #e52e71;
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .details-hidden .developer-details,
+        .details-hidden .social-links {
+            display: none;
+        }
+        
         /* Watermark for downloaded card */
         .watermark {
             position: absolute;
@@ -315,6 +462,10 @@
             background: #28a745;
         }
         
+        .share-btn {
+            background: #007bff;
+        }
+        
         .back-btn {
             background: #17a2b8;
         }
@@ -343,25 +494,25 @@
         
         /* Responsive Design */
         @media (max-width: 768px) {
-            .card {
+            .card, .developer-card {
                 flex-direction: column;
                 aspect-ratio: auto;
                 min-height: 500px;
             }
             
-            .card-image-section {
+            .card-image-section, .developer-photo-section {
                 flex: 0 0 200px;
             }
             
-            .card-content {
+            .card-content, .developer-info {
                 padding: 20px;
             }
             
-            .card-content h2 {
+            .card-content h2, .developer-name {
                 font-size: 1.6rem;
             }
             
-            .card-content p {
+            .card-content p, .developer-details {
                 font-size: 1rem;
             }
             
@@ -372,6 +523,10 @@
             
             .action-btn {
                 width: 200px;
+                justify-content: center;
+            }
+            
+            .social-links {
                 justify-content: center;
             }
         }
@@ -394,12 +549,12 @@
                 height: 120px;
             }
             
-            .card-image-section img {
+            .card-image-section img, .developer-photo {
                 width: 140px;
                 height: 140px;
             }
             
-            .card-content h2 {
+            .card-content h2, .developer-name {
                 font-size: 1.4rem;
             }
         }
@@ -440,6 +595,39 @@
                     <i class="fas fa-gift"></i> कार्ड जनरेट गर्नुहोस्
                 </button>
             </div>
+            
+            <!-- Developer Card - 16:9 Aspect Ratio -->
+            <div class="developer-section">
+                <div class="developer-card" id="developer-card">
+                    <button class="toggle-details" id="toggle-details">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    
+                    <div class="developer-photo-section">
+                        <img src="https://i.supaimg.com/1fc9e64c-5929-466a-a26b-dc11dbbe2189.jpg" alt="Developer" class="developer-photo">
+                    </div>
+                    
+                    <div class="developer-info">
+                        <h2 class="developer-name">Developer BY Kiran official 🥷</h2>
+                        <div class="developer-details">
+                            <p><strong>📱 Facebook:</strong> Kiran Official</p>
+                            <p><strong>🎵 TikTok:</strong> @ghanshyam.oli66</p>
+                            <p><strong>💬 WhatsApp:</strong> 98XXXXX</p>
+                        </div>
+                        <div class="social-links">
+                            <a href="https://www.facebook.com/kiranoffical2" class="social-link facebook" target="_blank" rel="noopener noreferrer">
+                                <i class="fab fa-facebook"></i> Facebook
+                            </a>
+                            <a href="https://www.tiktok.com/@ghanshyam.oli66?_t=ZS-904nSngw57S&_r=1" class="social-link tiktok" target="_blank" rel="noopener noreferrer">
+                                <i class="fab fa-tiktok"></i> TikTok
+                            </a>
+                            <a href="https://wa.me/984301225" class="social-link whatsapp" target="_blank" rel="noopener noreferrer">
+                                <i class="fab fa-whatsapp"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <!-- Page 2: Generated Card -->
@@ -461,14 +649,57 @@
                         <button class="action-btn download-btn" id="download-btn">
                             <i class="fas fa-download"></i> कार्ड डाउनलोड गर्नुहोस्
                         </button>
+                        <button class="action-btn share-btn" id="share-btn">
+                            <i class="fas fa-share-alt"></i> सेयर गर्नुहोस्
+                        </button>
                         <button class="action-btn back-btn" id="back-btn">
                             <i class="fas fa-arrow-left"></i> फर्कि जानुहोस्
                         </button>
                     </div>
                 </div>
+                
+                <!-- Developer Card on Page 2 -->
+                <div class="developer-section">
+                    <div class="developer-card" id="developer-card-page2">
+                        <button class="toggle-details" id="toggle-details-page2">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        
+                        <div class="developer-photo-section">
+                            <img src="https://i.supaimg.com/1fc9e64c-5929-466a-a26b-dc11dbbe2189.jpg" alt="Developer" class="developer-photo">
+                        </div>
+                        
+                        <div class="developer-info">
+                            <h2 class="developer-name">Developer BY Kiran official 🥷</h2>
+                            <div class="developer-details">
+                                <p><strong>📱 Facebook:</strong> Kiran Official</p>
+                                <p><strong>🎵 TikTok:</strong> @ghanshyam.oli66</p>
+                                <p><strong>💬 WhatsApp:</strong> 98XXXXX</p>
+                            </div>
+                            <div class="social-links">
+                                <a href="https://www.facebook.com/kiranoffical2" class="social-link facebook" target="_blank" rel="noopener noreferrer">
+                                    <i class="fab fa-facebook"></i> Facebook
+                                </a>
+                                <a href="https://www.tiktok.com/@ghanshyam.oli66?_t=ZS-904nSngw57S&_r=1" class="social-link tiktok" target="_blank" rel="noopener noreferrer">
+                                    <i class="fab fa-tiktok"></i> TikTok
+                                </a>
+                                <a href="https://wa.me/984301225" class="social-link whatsapp" target="_blank" rel="noopener noreferrer">
+                                    <i class="fab fa-whatsapp"></i> WhatsApp
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Background Music -->
+    <audio id="background-music" loop autoplay>
+        <!-- Replace with your music file from gallery -->
+        <source src="dashain-music.mp3" type="audio/mpeg">
+        तपाईंको ब्राउजरले audio element समर्थन गर्दैन।
+    </audio>
 
     <!-- HTML2Canvas Library for Download Feature -->
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
@@ -483,8 +714,18 @@
         const cardImage = document.getElementById('card-image');
         const greetingMessage = document.getElementById('greeting-message');
         const downloadBtn = document.getElementById('download-btn');
+        const shareBtn = document.getElementById('share-btn');
         const backBtn = document.getElementById('back-btn');
         const downloadCard = document.getElementById('download-card');
+        
+        // Developer Card Elements
+        const developerCard = document.getElementById('developer-card');
+        const toggleDetailsBtn = document.getElementById('toggle-details');
+        const developerCardPage2 = document.getElementById('developer-card-page2');
+        const toggleDetailsBtnPage2 = document.getElementById('toggle-details-page2');
+        
+        // Music Element
+        const backgroundMusic = document.getElementById('background-music');
         
         // Gender selection
         let selectedGender = '';
@@ -500,6 +741,28 @@
                 // Set selected gender
                 selectedGender = option.getAttribute('data-gender');
             });
+        });
+        
+        // Toggle developer details on page 1
+        toggleDetailsBtn.addEventListener('click', () => {
+            developerCard.classList.toggle('details-hidden');
+            
+            if (developerCard.classList.contains('details-hidden')) {
+                toggleDetailsBtn.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            } else {
+                toggleDetailsBtn.innerHTML = '<i class="fas fa-eye"></i>';
+            }
+        });
+        
+        // Toggle developer details on page 2
+        toggleDetailsBtnPage2.addEventListener('click', () => {
+            developerCardPage2.classList.toggle('details-hidden');
+            
+            if (developerCardPage2.classList.contains('details-hidden')) {
+                toggleDetailsBtnPage2.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            } else {
+                toggleDetailsBtnPage2.innerHTML = '<i class="fas fa-eye"></i>';
+            }
         });
         
         // Generate card function
@@ -524,15 +787,9 @@
             }
             
             // Create personalized greeting message
-            const greetings = [
-                `प्रिय ${name}, दशैंको पावन अवसरमा तपाईंलाई र तपाईंको परिवारलाई हार्दिक शुभकामना। यो दशैंले तपाईंको जीवनमा खुशी, समृद्धि र सफलता ल्याओस्।`,
-                `नमस्ते ${name}, दशैंको यस पवित्र अवसरमा मेरो तर्फबाट तपाईंलाई र तपाईंको पूरा परिवारलाई ढेर सारा शुभकामना। दशैंको उत्सवले तपाईंको जीवनमा नयाँ उर्जा र आशा ल्याओस्।`,
-                `${name} ज्यू, दशैंको हार्दिक शुभकामना! यो पर्वले तपाईंको जीवनबाट अशुभ तत्वहरू हटाएर सुख, शान्ति र समृद्धिको आगमन गराओस्। तपाईंको घरमा सधैं खुशी र मङ्गल होस्।`
-            ];
+            const greeting = `प्रिय ${name}, दशैंको पावन अवसरमा तपाईं र तपाईंको परिवारलाई सुख, शान्ति, स्वास्थ्य र समृद्धिले भरिपूर्ण रहोस्। देवी–देवताहरूको आशीर्वाद सधैं तपाईंमाथि रहोस्। शुभ दशैं! 🌸🙏`;
             
-            // Randomly select a greeting
-            const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
-            greetingMessage.textContent = randomGreeting;
+            greetingMessage.textContent = greeting;
             
             // Switch to card page
             page1.classList.remove('active');
@@ -554,10 +811,60 @@
             });
         });
         
+        // Share card function
+        shareBtn.addEventListener('click', () => {
+            html2canvas(downloadCard, {
+                scale: 2,
+                useCORS: true,
+                logging: false,
+                backgroundColor: null
+            }).then(canvas => {
+                canvas.toBlob(blob => {
+                    const file = new File([blob], 'दशैं-शुभकामना-कार्ड.png', { type: 'image/png' });
+                    
+                    if (navigator.share && navigator.canShare({ files: [file] })) {
+                        navigator.share({
+                            files: [file],
+                            title: 'दशैंको शुभकामना',
+                            text: 'दशैंको शुभकामना कार्ड साझा गर्दैछु!'
+                        })
+                        .catch(error => console.log('शेयर गर्दा त्रुटि:', error));
+                    } else {
+                        // Fallback for browsers that don't support sharing files
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = 'दशैं-शुभकामना-कार्ड.png';
+                        link.click();
+                        alert('तपाईंको डिवाइसले फाइल सेयर गर्न समर्थन गर्दैन। कार्ड डाउनलोड गरिएको छ।');
+                    }
+                });
+            });
+        });
+        
         // Back to form function
         backBtn.addEventListener('click', () => {
             page2.classList.remove('active');
             page1.classList.add('active');
+        });
+        
+        // Auto-play music when page loads
+        window.addEventListener('load', function() {
+            // Set music to loop
+            backgroundMusic.loop = true;
+            
+            // Play music softly after a short delay
+            setTimeout(() => {
+                backgroundMusic.volume = 0.3;
+                backgroundMusic.play().catch(e => {
+                    console.log('Music autoplay failed:', e);
+                });
+            }, 1000);
+        });
+        
+        // Ensure music restarts when it ends (for browsers that don't support loop properly)
+        backgroundMusic.addEventListener('ended', function() {
+            this.currentTime = 0;
+            this.play();
         });
     </script>
 </body>
