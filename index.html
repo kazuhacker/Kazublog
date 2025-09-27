@@ -19,11 +19,22 @@
             min-height: 100vh;
             padding: 15px;
             color: #333;
+            overflow-x: hidden;
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
+        }
+        
+        /* Page Styles */
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .page.active {
+            display: block;
         }
         
         /* Banner Styles */
@@ -46,7 +57,6 @@
             margin-bottom: 12px;
             font-weight: 700;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            animation: fadeIn 1.5s ease-in-out;
         }
         
         .banner p {
@@ -54,7 +64,6 @@
             max-width: 800px;
             margin: 0 auto;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-            animation: slideIn 1.8s ease-in-out;
         }
         
         /* Form Styles */
@@ -167,58 +176,40 @@
             box-shadow: 0 5px 15px rgba(229, 46, 113, 0.4);
         }
         
-        /* Card Styles - Mobile Optimized */
+        /* Card Styles - 16:9 Aspect Ratio */
+        .card-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+        }
+        
         .card-container {
-            display: none;
-            margin-top: 30px;
-            perspective: 1000px;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
         }
         
         .card {
             width: 100%;
-            max-width: 100%;
-            margin: 0 auto;
             background: linear-gradient(135deg, #fff 0%, #f9f9f9 100%);
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-            transform-style: preserve-3d;
-            transition: transform 0.8s;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            aspect-ratio: 16/9;
             display: flex;
-            flex-direction: column;
             position: relative;
-            min-height: 400px;
-        }
-        
-        @media (min-width: 768px) {
-            .card {
-                aspect-ratio: 16/9;
-                flex-direction: row;
-                max-width: 800px;
-            }
-        }
-        
-        .card:hover {
-            transform: rotateY(2deg) rotateX(1deg);
         }
         
         .card-image-section {
-            flex: 0 0 auto;
+            flex: 0 0 40%;
             position: relative;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             background: linear-gradient(135deg, #ff8a00 0%, #e52e71 100%);
-            padding: 20px;
-            height: 200px;
-        }
-        
-        @media (min-width: 768px) {
-            .card-image-section {
-                flex: 0 0 40%;
-                height: auto;
-            }
         }
         
         .card-image-section::before {
@@ -234,38 +225,25 @@
         }
         
         .card-image-section img {
-            width: 120px;
-            height: 120px;
+            width: 160px;
+            height: 160px;
             object-fit: cover;
             border-radius: 50%;
-            border: 5px solid white;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 6px solid white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             z-index: 1;
             animation: float 5s ease-in-out infinite;
         }
         
-        @media (min-width: 768px) {
-            .card-image-section img {
-                width: 160px;
-                height: 160px;
-            }
-        }
-        
         .card-content {
             flex: 1;
-            padding: 25px 20px;
+            padding: 30px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             text-align: center;
             background: white;
             position: relative;
-        }
-        
-        @media (min-width: 768px) {
-            .card-content {
-                padding: 30px;
-            }
         }
         
         .card-content::before {
@@ -282,98 +260,73 @@
         
         .card-content h2 {
             color: #e52e71;
-            margin-bottom: 15px;
-            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-size: 2rem;
             font-weight: 700;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
         }
         
-        @media (min-width: 768px) {
-            .card-content h2 {
-                font-size: 1.8rem;
-            }
-        }
-        
         .card-content p {
-            font-size: 1rem;
-            line-height: 1.6;
+            font-size: 1.2rem;
+            line-height: 1.7;
             color: #555;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         
-        @media (min-width: 768px) {
-            .card-content p {
-                font-size: 1.1rem;
-            }
+        /* Watermark for downloaded card */
+        .watermark {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            font-size: 0.8rem;
+            color: rgba(0, 0, 0, 0.3);
+            z-index: 10;
         }
         
-        .card-footer {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 12px 20px;
-            text-align: center;
-            font-size: 0.9rem;
-            color: #666;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid #e0e0e0;
+        .watermark::before {
+            content: "Developer BY Kiran official 🥷";
         }
         
-        @media (min-width: 480px) {
-            .card-footer {
-                flex-direction: row;
-            }
-        }
-        
+        /* Action Buttons */
         .action-buttons {
             display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 25px;
             justify-content: center;
+            flex-wrap: wrap;
         }
         
         .action-btn {
             background: #6c757d;
             color: white;
             border: none;
-            padding: 6px 12px;
-            border-radius: 5px;
+            padding: 10px 20px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 0.85rem;
+            font-size: 1rem;
             display: flex;
             align-items: center;
-            gap: 4px;
-            white-space: nowrap;
+            gap: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         }
         
         .download-btn {
             background: #28a745;
         }
         
-        .share-btn {
+        .back-btn {
             background: #17a2b8;
-        }
-        
-        .remove-btn {
-            background: #dc3545;
         }
         
         .action-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
         /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
@@ -387,63 +340,129 @@
             50% { transform: translateY(-8px); }
             100% { transform: translateY(0px); }
         }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .card {
+                flex-direction: column;
+                aspect-ratio: auto;
+                min-height: 500px;
+            }
+            
+            .card-image-section {
+                flex: 0 0 200px;
+            }
+            
+            .card-content {
+                padding: 20px;
+            }
+            
+            .card-content h2 {
+                font-size: 1.6rem;
+            }
+            
+            .card-content p {
+                font-size: 1rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .action-btn {
+                width: 200px;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .banner {
+                padding: 25px 15px;
+            }
+            
+            .banner h1 {
+                font-size: 1.7rem;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            .gender-option img {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .card-image-section img {
+                width: 140px;
+                height: 140px;
+            }
+            
+            .card-content h2 {
+                font-size: 1.4rem;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Page 1: Input Form -->
     <div class="container">
-        <!-- Banner with Background Image -->
-        <div class="banner">
-            <h1>दशैंको शुभकामना कार्ड जनरेटर</h1>
-            <p>आफ्नो नाम र लिङ्ग छानेर दशैंको शुभकामना कार्ड सिर्जना गर्नुहोस्</p>
-        </div>
-        
-        <!-- Form Section -->
-        <div class="form-container">
-            <div class="form-group">
-                <label for="name">नाम:</label>
-                <input type="text" id="name" placeholder="आफ्नो नाम लेख्नुहोस्">
+        <div class="page active" id="page1">
+            <!-- Banner with Background Image -->
+            <div class="banner">
+                <h1>दशैंको शुभकामना कार्ड जनरेटर</h1>
+                <p>आफ्नो नाम र लिङ्ग छानेर दशैंको शुभकामना कार्ड सिर्जना गर्नुहोस्</p>
             </div>
             
-            <div class="form-group">
-                <label>लिङ्ग छान्नुहोस्:</label>
-                <div class="gender-options">
-                    <div class="gender-option" data-gender="male">
-                        <img src="https://i.supaimg.com/a15c4bbd-7791-45de-81cb-0e46006edab5.jpg" alt="पुरुष">
-                        <p>पुरुष</p>
-                    </div>
-                    <div class="gender-option" data-gender="female">
-                        <img src="https://i.supaimg.com/20de1762-8694-408f-ac41-2b64c6fabfb8.jpg" alt="महिला">
-                        <p>महिला</p>
+            <!-- Form Section -->
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="name">नाम:</label>
+                    <input type="text" id="name" placeholder="आफ्नो नाम लेख्नुहोस्">
+                </div>
+                
+                <div class="form-group">
+                    <label>लिङ्ग छान्नुहोस्:</label>
+                    <div class="gender-options">
+                        <div class="gender-option" data-gender="male">
+                            <img src="https://i.supaimg.com/a15c4bbd-7791-45de-81cb-0e46006edab5.jpg" alt="पुरुष">
+                            <p>पुरुष</p>
+                        </div>
+                        <div class="gender-option" data-gender="female">
+                            <img src="https://i.supaimg.com/20de1762-8694-408f-ac41-2b64c6fabfb8.jpg" alt="महिला">
+                            <p>महिला</p>
+                        </div>
                     </div>
                 </div>
+                
+                <button id="generate-btn">
+                    <i class="fas fa-gift"></i> कार्ड जनरेट गर्नुहोस्
+                </button>
             </div>
-            
-            <button id="generate-btn">
-                <i class="fas fa-gift"></i> कार्ड जनरेट गर्नुहोस्
-            </button>
         </div>
         
-        <!-- Generated Card -->
-        <div class="card-container" id="card-container">
-            <div class="card">
-                <div class="card-image-section">
-                    <img id="card-image" src="" alt="दशैं शुभकामना">
-                </div>
-                <div class="card-content">
-                    <h2 id="greeting-title">दशैंको हार्दिक शुभकामना!</h2>
-                    <p id="greeting-message"></p>
-                </div>
-                <div class="card-footer">
-                    <span>Developer BY Kiran official</span>
+        <!-- Page 2: Generated Card -->
+        <div class="page" id="page2">
+            <div class="card-page">
+                <div class="card-container">
+                    <div class="card" id="download-card">
+                        <div class="card-image-section">
+                            <img id="card-image" src="" alt="दशैं शुभकामना">
+                        </div>
+                        <div class="card-content">
+                            <h2 id="greeting-title">दशैंको हार्दिक शुभकामना!</h2>
+                            <p id="greeting-message"></p>
+                        </div>
+                        <div class="watermark"></div>
+                    </div>
+                    
                     <div class="action-buttons">
                         <button class="action-btn download-btn" id="download-btn">
-                            <i class="fas fa-download"></i> डाउनलोड
+                            <i class="fas fa-download"></i> कार्ड डाउनलोड गर्नुहोस्
                         </button>
-                        <button class="action-btn share-btn" id="share-btn">
-                            <i class="fas fa-share-alt"></i> सेयर
-                        </button>
-                        <button class="action-btn remove-btn" id="remove-btn">
-                            <i class="fas fa-times"></i> हटाउनुहोस्
+                        <button class="action-btn back-btn" id="back-btn">
+                            <i class="fas fa-arrow-left"></i> फर्कि जानुहोस्
                         </button>
                     </div>
                 </div>
@@ -456,15 +475,16 @@
     
     <script>
         // DOM Elements
+        const page1 = document.getElementById('page1');
+        const page2 = document.getElementById('page2');
         const nameInput = document.getElementById('name');
         const genderOptions = document.querySelectorAll('.gender-option');
         const generateBtn = document.getElementById('generate-btn');
-        const cardContainer = document.getElementById('card-container');
         const cardImage = document.getElementById('card-image');
         const greetingMessage = document.getElementById('greeting-message');
         const downloadBtn = document.getElementById('download-btn');
-        const shareBtn = document.getElementById('share-btn');
-        const removeBtn = document.getElementById('remove-btn');
+        const backBtn = document.getElementById('back-btn');
+        const downloadCard = document.getElementById('download-card');
         
         // Gender selection
         let selectedGender = '';
@@ -514,16 +534,19 @@
             const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
             greetingMessage.textContent = randomGreeting;
             
-            // Show the card with animation
-            cardContainer.style.display = 'block';
-            setTimeout(() => {
-                cardContainer.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
+            // Switch to card page
+            page1.classList.remove('active');
+            page2.classList.add('active');
         });
         
         // Download card function
         downloadBtn.addEventListener('click', () => {
-            html2canvas(document.querySelector('.card')).then(canvas => {
+            html2canvas(downloadCard, {
+                scale: 2,
+                useCORS: true,
+                logging: false,
+                backgroundColor: null
+            }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = 'दशैं-शुभकामना-कार्ड.png';
                 link.href = canvas.toDataURL('image/png');
@@ -531,30 +554,10 @@
             });
         });
         
-        // Share card function
-        shareBtn.addEventListener('click', () => {
-            if (navigator.share) {
-                html2canvas(document.querySelector('.card')).then(canvas => {
-                    canvas.toBlob(blob => {
-                        const file = new File([blob], 'दशैं-शुभकामना-कार्ड.png', { type: 'image/png' });
-                        navigator.share({
-                            title: 'दशैंको शुभकामना कार्ड',
-                            text: 'मेरो तर्फबाट दशैंको शुभकामना!',
-                            files: [file]
-                        });
-                    });
-                });
-            } else {
-                alert('तपाईंको ब्राउजरले फाइल सेयर गर्न सपोर्ट गर्दैन। कृपया डाउनलोड बटन प्रयोग गर्नुहोस्।');
-            }
-        });
-        
-        // Remove card function
-        removeBtn.addEventListener('click', () => {
-            cardContainer.style.display = 'none';
-            nameInput.value = '';
-            selectedGender = '';
-            genderOptions.forEach(opt => opt.classList.remove('selected'));
+        // Back to form function
+        backBtn.addEventListener('click', () => {
+            page2.classList.remove('active');
+            page1.classList.add('active');
         });
     </script>
 </body>
