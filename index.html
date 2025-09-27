@@ -1,295 +1,561 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ne">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard</title>
-<style>
-  /* General Styles */
-  * {box-sizing: border-box;}
-  body {margin:0;font: Arial, sans-serif;background:#f2f2f2;}
-  a {text-decoration:none;color:inherit;}
-  
-  /* Navbar */
-  .navbar {display:flex;justify-content:space-between;align-items:center;padding:10px 20px;background:#007bff;color:#fff;position:sticky;top:0;z-index:100;}
-  .navbar .title {font-size:20px;font-weight:bold;}
-  .navbar .profile {cursor:pointer;}
-  
-  /* Sidebar */
-  .sidebar {position:fixed;left:0;top:50px;width:220px;background:#fff;height:100%;box-shadow:2px 0 5px rgba(0,0,0,0.1);transition:0.3s;overflow:auto;}
-  .sidebar.collapsed {width:60px;}
-  .sidebar ul {list-style:none;padding:0;margin:0;}
-  .sidebar li {padding:15px 20px;cursor:pointer;display:flex;align-items:center;}
-  .sidebar li:hover {background:#f0f0f0;}
-  
-  /* Main Content */
-  .main {margin-left:220px;padding:20px;transition:0.3s;}
-  .main.collapsed {margin-left:60px;}
-  
-  /* Search & Filter */
-  .controls {display:flex;justify-content:space-between;margin-bottom:15px;flex-wrap:wrap;gap:10px;}
-  .controls input, .controls select, .controls button {padding:8px;border-radius:6px;border:1px solid #ccc;}
-  .controls button {background:#007bff;color:#fff;border:none;cursor:pointer;}
-  .controls button:hover {background:#0056b3;}
-  
-  /* Table */
-  table {width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 10px rgba(0,0,0,0.05);}
-  th, td {padding:10px;text-align:left;border-bottom:1px solid #eee;}
-  th {background:#f7f7f7;}
-  tr:hover {background:#f1f1f1;}
-  .thumbnail {width:40px;height:40px;border-radius:50%;object-fit:cover;}
-  .badge {padding:4px 8px;border-radius:12px;color:#fff;font-size:12px;}
-  .male {background:#007bff;}
-  .female {background:#ff4081;}
-  
-  /* Actions */
-  .actions button {margin-right:5px;padding:5px 8px;border-radius:6px;border:none;cursor:pointer;font-size:12px;}
-  .edit {background:#28a745;color:#fff;}
-  .delete {background:#dc3545;color:#fff;}
-  .view {background:#17a2b8;color:#fff;}
-  .download {background:#ffc107;color:#fff;}
-  
-  /* Modal */
-  .modal {display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:1000;}
-  .modal-content {background:#fff;padding:20px;border-radius:12px;max-width:600px;width:90%;max-height:90%;overflow:auto;position:relative;}
-  .modal-content h3 {margin-top:0;}
-  .modal-content .images {display:flex;gap:10px;margin-bottom:10px;}
-  .modal-content img {width:100px;height:100px;object-fit:cover;border-radius:8px;}
-  .modal-content .modal-actions {margin-top:15px;text-align:right;}
-  .close-modal {position:absolute;top:10px;right:15px;font-size:20px;font-weight:bold;cursor:pointer;}
-  
-  /* Toast */
-  #toast {position:fixed;bottom:20px;right:20px;background:#333;color:#fff;padding:10px 20px;border-radius:8px;display:none;}
-  
-  /* Responsive */
-  @media(max-width:768px){
-    .sidebar{position:relative;width:100%;height:auto;}
-    .main{margin-left:0;}
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>दशैं शुभकामना कार्ड जनरेटर</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Arial', sans-serif;
+        }
+        
+        body {
+            background: #f8f9fa;
+            min-height: 100vh;
+            padding: 15px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Banner Styles */
+        .banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://i.supaimg.com/13159da3-6a6a-40c9-9d5d-dd2a3ca0910f.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .banner h1 {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        
+        .banner p {
+            font-size: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            animation: slideIn 1.8s ease-in-out;
+        }
+        
+        /* Form Styles */
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+            font-size: 1rem;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            border-color: #e52e71;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(229, 46, 113, 0.2);
+        }
+        
+        .gender-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        @media (min-width: 768px) {
+            .gender-options {
+                flex-direction: row;
+            }
+        }
+        
+        .gender-option {
+            text-align: center;
+            cursor: pointer;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            transition: all 0.3s;
+            background: #f9f9f9;
+        }
+        
+        .gender-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gender-option.selected {
+            border-color: #e52e71;
+            background: linear-gradient(135deg, #f9f0f3 0%, #f0d8e0 100%);
+            box-shadow: 0 3px 10px rgba(229, 46, 113, 0.2);
+        }
+        
+        .gender-option img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            border: 3px solid #e0e0e0;
+            transition: all 0.5s;
+        }
+        
+        .gender-option.selected img {
+            border-color: #e52e71;
+            animation: rotate 3s linear infinite;
+        }
+        
+        .gender-option p {
+            font-weight: 600;
+            color: #555;
+            font-size: 1rem;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #e52e71 0%, #ff8a00 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            margin: 0 auto;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(229, 46, 113, 0.3);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 46, 113, 0.4);
+        }
+        
+        /* Card Styles - Mobile Optimized */
+        .card-container {
+            display: none;
+            margin-top: 30px;
+            perspective: 1000px;
+        }
+        
+        .card {
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #fff 0%, #f9f9f9 100%);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            transform-style: preserve-3d;
+            transition: transform 0.8s;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            min-height: 400px;
+        }
+        
+        @media (min-width: 768px) {
+            .card {
+                aspect-ratio: 16/9;
+                flex-direction: row;
+                max-width: 800px;
+            }
+        }
+        
+        .card:hover {
+            transform: rotateY(2deg) rotateX(1deg);
+        }
+        
+        .card-image-section {
+            flex: 0 0 auto;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #ff8a00 0%, #e52e71 100%);
+            padding: 20px;
+            height: 200px;
+        }
+        
+        @media (min-width: 768px) {
+            .card-image-section {
+                flex: 0 0 40%;
+                height: auto;
+            }
+        }
+        
+        .card-image-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://i.supaimg.com/13159da3-6a6a-40c9-9d5d-dd2a3ca0910f.jpg');
+            background-size: cover;
+            opacity: 0.1;
+        }
+        
+        .card-image-section img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            animation: float 5s ease-in-out infinite;
+        }
+        
+        @media (min-width: 768px) {
+            .card-image-section img {
+                width: 160px;
+                height: 160px;
+            }
+        }
+        
+        .card-content {
+            flex: 1;
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            background: white;
+            position: relative;
+        }
+        
+        @media (min-width: 768px) {
+            .card-content {
+                padding: 30px;
+            }
+        }
+        
+        .card-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://i.supaimg.com/13159da3-6a6a-40c9-9d5d-dd2a3ca0910f.jpg');
+            background-size: cover;
+            opacity: 0.03;
+        }
+        
+        .card-content h2 {
+            color: #e52e71;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        @media (min-width: 768px) {
+            .card-content h2 {
+                font-size: 1.8rem;
+            }
+        }
+        
+        .card-content p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        
+        @media (min-width: 768px) {
+            .card-content p {
+                font-size: 1.1rem;
+            }
+        }
+        
+        .card-footer {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 12px 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        @media (min-width: 480px) {
+            .card-footer {
+                flex-direction: row;
+            }
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .action-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+        
+        .download-btn {
+            background: #28a745;
+        }
+        
+        .share-btn {
+            background: #17a2b8;
+        }
+        
+        .remove-btn {
+            background: #dc3545;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
 </head>
 <body>
-
-<!-- Navbar -->
-<div class="navbar">
-  <div class="title">Admin Dashboard</div>
-  <div class="profile">Profile / Logout</div>
-</div>
-
-<!-- Sidebar -->
-<div class="sidebar" id="sidebar">
-  <ul>
-    <li>Dashboard</li>
-    <li>All Records</li>
-    <li>Filters</li>
-    <li>Export/Download</li>
-    <li>Settings</li>
-  </ul>
-</div>
-
-<!-- Main Content -->
-<div class="main" id="main">
-  <div class="controls">
-    <input type="text" id="searchName" placeholder="Search by Name">
-    <select id="filterGender">
-      <option value="all">All</option>
-      <option value="male">Male</option>
-      <option value="female">Female</option>
-    </select>
-    <button id="downloadAll">Download All PDF</button>
-  </div>
-  
-  <table id="recordsTable">
-    <thead>
-      <tr>
-        <th>Photo</th>
-        <th>Name</th>
-        <th>Gender</th>
-        <th>Age</th>
-        <th>Date Submitted</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Records dynamically inserted here -->
-    </tbody>
-  </table>
-</div>
-
-<!-- Modal -->
-<div class="modal" id="modal">
-  <div class="modal-content">
-    <span class="close-modal" id="closeModal">&times;</span>
-    <h3 id="modalName"></h3>
-    <p><strong>Gender:</strong> <span id="modalGender"></span></p>
-    <p><strong>Age:</strong> <span id="modalAge"></span></p>
-    <p><strong>Citizenship Number:</strong> <span id="modalCNum"></span></p>
-    <div class="images">
-      <img id="modalPassport" alt="Passport">
-      <img id="modalCFront" alt="Citizenship Front">
-      <img id="modalCBack" alt="Citizenship Back">
+    <div class="container">
+        <!-- Banner with Background Image -->
+        <div class="banner">
+            <h1>दशैंको शुभकामना कार्ड जनरेटर</h1>
+            <p>आफ्नो नाम र लिङ्ग छानेर दशैंको शुभकामना कार्ड सिर्जना गर्नुहोस्</p>
+        </div>
+        
+        <!-- Form Section -->
+        <div class="form-container">
+            <div class="form-group">
+                <label for="name">नाम:</label>
+                <input type="text" id="name" placeholder="आफ्नो नाम लेख्नुहोस्">
+            </div>
+            
+            <div class="form-group">
+                <label>लिङ्ग छान्नुहोस्:</label>
+                <div class="gender-options">
+                    <div class="gender-option" data-gender="male">
+                        <img src="https://i.supaimg.com/a15c4bbd-7791-45de-81cb-0e46006edab5.jpg" alt="पुरुष">
+                        <p>पुरुष</p>
+                    </div>
+                    <div class="gender-option" data-gender="female">
+                        <img src="https://i.supaimg.com/20de1762-8694-408f-ac41-2b64c6fabfb8.jpg" alt="महिला">
+                        <p>महिला</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="generate-btn">
+                <i class="fas fa-gift"></i> कार्ड जनरेट गर्नुहोस्
+            </button>
+        </div>
+        
+        <!-- Generated Card -->
+        <div class="card-container" id="card-container">
+            <div class="card">
+                <div class="card-image-section">
+                    <img id="card-image" src="" alt="दशैं शुभकामना">
+                </div>
+                <div class="card-content">
+                    <h2 id="greeting-title">दशैंको हार्दिक शुभकामना!</h2>
+                    <p id="greeting-message"></p>
+                </div>
+                <div class="card-footer">
+                    <span>Developer BY Kiran official</span>
+                    <div class="action-buttons">
+                        <button class="action-btn download-btn" id="download-btn">
+                            <i class="fas fa-download"></i> डाउनलोड
+                        </button>
+                        <button class="action-btn share-btn" id="share-btn">
+                            <i class="fas fa-share-alt"></i> सेयर
+                        </button>
+                        <button class="action-btn remove-btn" id="remove-btn">
+                            <i class="fas fa-times"></i> हटाउनुहोस्
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="modal-actions">
-      <button class="edit" id="editBtn">Edit</button>
-      <button class="delete" id="deleteBtn">Delete</button>
-      <button class="download" id="downloadBtn">Download PDF</button>
-    </div>
-  </div>
-</div>
 
-<div id="toast"></div>
-
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-<script>
-  // Firebase Config - replace with your credentials
-  const firebaseConfig = {
-  apiKey: "AIzaSyA05yiB3GPh0e8VjiWacd1D1mXCFYNFvjs",
-  authDomain: "earning-58441.firebaseapp.com",
-  databaseURL: "https://earning-58441-default-rtdb.firebaseio.com",
-  projectId: "earning-58441",
-  storageBucket: "earning-58441.firebasestorage.app",
-  messagingSenderId: "771237826936",
-  appId: "1:771237826936:web:2489c2b4db2640638a388d",
-  measurementId: "G-TRV6N5E1NY"
-};
-
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-  const recordsRef = db.ref('forms');
-
-  const tbody = document.querySelector('#recordsTable tbody');
-  const searchInput = document.getElementById('searchName');
-  const filterGender = document.getElementById('filterGender');
-  const toast = document.getElementById('toast');
-
-  let allRecords = [];
-
-  // Toast function
-  function showToast(msg){
-    toast.innerText = msg;
-    toast.style.display = 'block';
-    setTimeout(()=>{toast.style.display='none';},3000);
-  }
-
-  // Render Table
-  function renderTable(){
-    const searchVal = searchInput.value.toLowerCase();
-    const genderVal = filterGender.value;
-    tbody.innerHTML = '';
-    allRecords.filter(r=>{
-      return (r.name.toLowerCase().includes(searchVal)) && 
-             (genderVal==='all' || r.gender===genderVal);
-    }).forEach(r=>{
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td><img src="${r.passportPhoto}" class="thumbnail"></td>
-        <td><a href="#" class="viewLink" data-id="${r.id}">${r.name}</a></td>
-        <td><span class="badge ${r.gender}">${r.gender}</span></td>
-        <td>${r.age}</td>
-        <td>${new Date(r.createdAt).toLocaleDateString()}</td>
-        <td class="actions">
-          <button class="view" data-id="${r.id}">View</button>
-          <button class="edit" data-id="${r.id}">Edit</button>
-          <button class="delete" data-id="${r.id}">Delete</button>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
-
-  // Fetch Data
-  recordsRef.on('value', snapshot=>{
-    allRecords=[];
-    snapshot.forEach(child=>{
-      allRecords.push({...child.val(), id: child.key});
-    });
-    renderTable();
-  });
-
-  // Search & Filter
-  searchInput.addEventListener('input', renderTable);
-  filterGender.addEventListener('change', renderTable);
-
-  // Modal Logic
-  const modal = document.getElementById('modal');
-  const closeModal = document.getElementById('closeModal');
-  closeModal.onclick = ()=> modal.style.display='none';
-
-  tbody.addEventListener('click', (e)=>{
-    if(e.target.classList.contains('viewLink') || e.target.classList.contains('view')){
-      const id = e.target.dataset.id;
-      openModal(id);
-    }
-    if(e.target.classList.contains('edit')){
-      const id = e.target.dataset.id;
-      editRecord(id);
-    }
-    if(e.target.classList.contains('delete')){
-      const id = e.target.dataset.id;
-      deleteRecord(id);
-    }
-  });
-
-  function openModal(id){
-    const record = allRecords.find(r=>r.id===id);
-    if(!record) return;
-    document.getElementById('modalName').innerText = record.name;
-    document.getElementById('modalGender').innerText = record.gender;
-    document.getElementById('modalAge').innerText = record.age;
-    document.getElementById('modalCNum').innerText = record.citizenshipNumber;
-    document.getElementById('modalPassport').src = record.passportPhoto;
-    document.getElementById('modalCFront').src = record.citizenshipFront;
-    document.getElementById('modalCBack').src = record.citizenshipBack;
-    modal.style.display='flex';
-  }
-
-  function editRecord(id){
-    const record = allRecords.find(r=>r.id===id);
-    if(!record) return;
-    const newName = prompt("Enter new name", record.name);
-    if(newName) {
-      recordsRef.child(id).update({name:newName}, err=>{
-        if(err) showToast('Error updating!');
-        else showToast('Updated successfully!');
-      });
-    }
-  }
-
-  function deleteRecord(id){
-    if(confirm("Are you sure to delete this record?")){
-      recordsRef.child(id).remove(err=>{
-        if(err) showToast('Error deleting!');
-        else showToast('Deleted successfully!');
-      });
-    }
-  }
-
-  // Download single PDF
-  document.getElementById('downloadBtn').onclick = ()=>{
-    const name = document.getElementById('modalName').innerText;
-    const doc = new jspdf.jsPDF();
-    doc.text(`Name: ${name}`,10,10);
-    doc.save(`${name}.pdf`);
-  }
-
-  // Download all PDF
-  document.getElementById('downloadAll').onclick = ()=>{
-    const doc = new jspdf.jsPDF();
-    let y = 10;
-    allRecords.forEach(r=>{
-      doc.text(`Name: ${r.name}`,10,y);
-      y+=10;
-      doc.text(`Gender: ${r.gender}`,10,y);
-      y+=10;
-      doc.text(`Age: ${r.age}`,10,y);
-      y+=20;
-    });
-    doc.save(`All_Records.pdf`);
-  }
-</script>
+    <!-- HTML2Canvas Library for Download Feature -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
+    <script>
+        // DOM Elements
+        const nameInput = document.getElementById('name');
+        const genderOptions = document.querySelectorAll('.gender-option');
+        const generateBtn = document.getElementById('generate-btn');
+        const cardContainer = document.getElementById('card-container');
+        const cardImage = document.getElementById('card-image');
+        const greetingMessage = document.getElementById('greeting-message');
+        const downloadBtn = document.getElementById('download-btn');
+        const shareBtn = document.getElementById('share-btn');
+        const removeBtn = document.getElementById('remove-btn');
+        
+        // Gender selection
+        let selectedGender = '';
+        
+        genderOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove selected class from all options
+                genderOptions.forEach(opt => opt.classList.remove('selected'));
+                
+                // Add selected class to clicked option
+                option.classList.add('selected');
+                
+                // Set selected gender
+                selectedGender = option.getAttribute('data-gender');
+            });
+        });
+        
+        // Generate card function
+        generateBtn.addEventListener('click', () => {
+            const name = nameInput.value.trim();
+            
+            if (!name) {
+                alert('कृपया आफ्नो नाम लेख्नुहोस्');
+                return;
+            }
+            
+            if (!selectedGender) {
+                alert('कृपया लिङ्ग छान्नुहोस्');
+                return;
+            }
+            
+            // Set card image based on gender
+            if (selectedGender === 'male') {
+                cardImage.src = 'https://i.supaimg.com/a15c4bbd-7791-45de-81cb-0e46006edab5.jpg';
+            } else {
+                cardImage.src = 'https://i.supaimg.com/20de1762-8694-408f-ac41-2b64c6fabfb8.jpg';
+            }
+            
+            // Create personalized greeting message
+            const greetings = [
+                `प्रिय ${name}, दशैंको पावन अवसरमा तपाईंलाई र तपाईंको परिवारलाई हार्दिक शुभकामना। यो दशैंले तपाईंको जीवनमा खुशी, समृद्धि र सफलता ल्याओस्।`,
+                `नमस्ते ${name}, दशैंको यस पवित्र अवसरमा मेरो तर्फबाट तपाईंलाई र तपाईंको पूरा परिवारलाई ढेर सारा शुभकामना। दशैंको उत्सवले तपाईंको जीवनमा नयाँ उर्जा र आशा ल्याओस्।`,
+                `${name} ज्यू, दशैंको हार्दिक शुभकामना! यो पर्वले तपाईंको जीवनबाट अशुभ तत्वहरू हटाएर सुख, शान्ति र समृद्धिको आगमन गराओस्। तपाईंको घरमा सधैं खुशी र मङ्गल होस्।`
+            ];
+            
+            // Randomly select a greeting
+            const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
+            greetingMessage.textContent = randomGreeting;
+            
+            // Show the card with animation
+            cardContainer.style.display = 'block';
+            setTimeout(() => {
+                cardContainer.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        });
+        
+        // Download card function
+        downloadBtn.addEventListener('click', () => {
+            html2canvas(document.querySelector('.card')).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'दशैं-शुभकामना-कार्ड.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        });
+        
+        // Share card function
+        shareBtn.addEventListener('click', () => {
+            if (navigator.share) {
+                html2canvas(document.querySelector('.card')).then(canvas => {
+                    canvas.toBlob(blob => {
+                        const file = new File([blob], 'दशैं-शुभकामना-कार्ड.png', { type: 'image/png' });
+                        navigator.share({
+                            title: 'दशैंको शुभकामना कार्ड',
+                            text: 'मेरो तर्फबाट दशैंको शुभकामना!',
+                            files: [file]
+                        });
+                    });
+                });
+            } else {
+                alert('तपाईंको ब्राउजरले फाइल सेयर गर्न सपोर्ट गर्दैन। कृपया डाउनलोड बटन प्रयोग गर्नुहोस्।');
+            }
+        });
+        
+        // Remove card function
+        removeBtn.addEventListener('click', () => {
+            cardContainer.style.display = 'none';
+            nameInput.value = '';
+            selectedGender = '';
+            genderOptions.forEach(opt => opt.classList.remove('selected'));
+        });
+    </script>
 </body>
 </html>
